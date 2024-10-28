@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package game;
+
+message LocationUpdatePayload {
+    float x = 1;
+    float y = 2;
+}
+
+// 여러 플레이어의 위치를 알기위해 위치를담는
+message LocationUpdate {
+    repeated UserLocation users = 1;
+}
+
+message UserLocation {
+    string id = 1;
+    uint32 playerId = 2;
+    float x = 3;
+    float y = 4;
+}
