@@ -5,6 +5,6 @@ export const PACKET_TYPE_LENGTH = 1;
 
 export const PAKET_TYPE = {
   PING: 0,
-  Normal: 1,
-  Location: 3,
+  NORMAL: 1,
+  LOCATION: 3,
 };
