@@ -1,4 +1,5 @@
 import { PACKET_TYPE, PACKET_TYPE_LENGTH, TOTAL_LENGTH } from '../constants/header.js';
+import { getHandlerById } from '../handlers/index.js';
 import { packetParser } from '../utils/parser/packetParser.js';
 
 export const onData = (socket) => (data) => {
@@ -19,8 +20,11 @@ export const onData = (socket) => (data) => {
           }
 
           case PACKET_TYPE.NORMAL: {
-            const result = packetParser(packet);
-            console.log('result:', result);
+            const { handlerId, userId, payload } = packetParser(packet);
+            const handler = getHandlerById(handlerId);
+
+            handler({ socket, userId, payload });
+            // console.log('result:', result);
             break;
           }
 
