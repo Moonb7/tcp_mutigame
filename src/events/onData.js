@@ -7,7 +7,7 @@ export const onData = (socket) => (data) => {
 
   while (socket.buffer.length > totalHeaderLength) {
     const length = socket.buffer.readUInt32BE(0); // 데이터에 포함된 총 길이를 가져옵니다. 데이터의 첫번째 부터 4바이트까지 읽어옵니다. 쉽게 표현하면 1 ~ 4까지 읽습니다.
-    const packetType = socket.buffer.readUInt8BE(TOTAL_LENGTH); // 이것도 마찬가지로 패킷의 타입을 가져옵니다. 4바이트부터 1바이트까지 읽습니다. 쉽게 표현하면 시작위치: TOTAL_LENGTH = 4, 그래서 4 ~ 5, 5에 자리만 읽습니다.
+    const packetType = socket.buffer.readUInt8(TOTAL_LENGTH); // 이것도 마찬가지로 패킷의 타입을 가져옵니다. 4바이트부터 1바이트까지 읽습니다. 쉽게 표현하면 시작위치: TOTAL_LENGTH = 4, 그래서 4 ~ 5, 5에 자리만 읽습니다.
 
     if (socket.buffer.length >= length) {
       const packet = socket.buffer.subarray(totalHeaderLength, length); // 실제 보내줄 정보 payload부분입니다.
@@ -20,7 +20,7 @@ export const onData = (socket) => (data) => {
 
           case PACKET_TYPE.NORMAL: {
             const result = packetParser(packet);
-            console.log('PACKET:result:', result);
+            console.log('result:', result);
             break;
           }
 

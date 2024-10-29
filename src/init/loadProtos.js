@@ -39,7 +39,7 @@ export const loadProtos = async () => {
 
     for (const [packetName, types] of Object.entries(packetNames)) {
       protoMessages[packetName] = {};
-      for (const [typeName, type] of Object.entries(types)) {
+      for (const [type, typeName] of Object.entries(types)) {
         protoMessages[packetName][type] = root.lookupType(typeName); // root여기서 로드된 파일에서 해당 typeName 즉 프로토파일에서 정의한 message의 이름, 타입들을 순회하여 알맞게 객체에 저장합니다.
       }
     }

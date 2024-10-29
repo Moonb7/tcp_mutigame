@@ -6,5 +6,5 @@ message CommonPacket {
     uint32 handlerId = 1;
     string userId = 2;
     string version = 3;
-    bytes payload = 5;
+    bytes payload = 4;
 }

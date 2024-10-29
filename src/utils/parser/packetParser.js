@@ -2,7 +2,7 @@ import { config } from '../../config/config.js';
 import { ErrorCodes } from '../../constants/codes/errorCodes.js';
 import { getProtoTypeNameByHandlerId } from '../../handlers/index.js';
 import { getProtoMessages } from '../../init/loadProtos.js';
-import CustomError from './error/customError.js';
+import CustomError from '../error/customError.js';
 
 export const packetParser = (data) => {
   const protoMessages = getProtoMessages();
@@ -16,7 +16,6 @@ export const packetParser = (data) => {
   }
 
   const { handlerId, userId, version: clientVersion } = packet;
-  console.log(clientVersion);
 
   if (clientVersion !== config.client.version) {
     throw new CustomError(
@@ -44,7 +43,6 @@ export const packetParser = (data) => {
   const expectedFields = Object.keys(PayloadType.fields); // 해당 프로토 파일의 필드 정보를 가져옵니다.
   const actualFields = Object.keys(payload); // 정의한 payload의 필드 정보를 가져옵니다.
   const missingFields = expectedFields.filter((field) => !actualFields.includes(field)); // 전체 필드에서 가져온 필드에 안맞는(놓친) 필드가 있는지 확인합니다.
-
   // 놓친 필드가 있다면 오류처리합니다.
   if (missingFields.length > 0) {
     throw new CustomError(

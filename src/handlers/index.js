@@ -1,6 +1,6 @@
 import { ErrorCodes } from '../constants/codes/errorCodes.js';
 import { HANDLER_IDS } from '../constants/handlerId.js';
-import CustomError from '../utils/parser/error/customError.js';
+import CustomError from '../utils/error/customError.js';
 import { initialHandler } from './user/initial.handler.js';
 
 // 클라이언트에게 받은 핸들러 id를 매핑해주는 역할을 하는 객체
