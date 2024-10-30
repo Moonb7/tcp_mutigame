@@ -2,7 +2,7 @@ import { RESPONSE_SUCCESS_CODE } from '../../constants/codes/responseCode.js';
 import { HANDLER_IDS } from '../../constants/handlerId.js';
 import { getGameSession } from '../../session/game.session.js';
 import { addUser } from '../../session/user.session.js';
-import { createReponse } from '../../utils/response/createResponse.js';
+import { createResponse } from '../../utils/response/createResponse.js';
 
 export const initialHandler = async ({ socket, userId, payload }) => {
   try {
@@ -11,7 +11,7 @@ export const initialHandler = async ({ socket, userId, payload }) => {
     const gameSession = getGameSession();
     gameSession.addUser(user);
 
-    const initialResponse = createReponse(HANDLER_IDS.INITIAL, RESPONSE_SUCCESS_CODE, {
+    const initialResponse = createResponse(HANDLER_IDS.INITIAL, RESPONSE_SUCCESS_CODE, {
       userId: deviceId,
     });
 

@@ -1,7 +1,8 @@
+import { config } from '../../config/config.js';
 import { PACKET_TYPE, PACKET_TYPE_LENGTH, TOTAL_LENGTH } from '../../constants/header.js';
 import { getProtoMessages } from '../../init/loadProtos.js';
 
-export const createReponse = (handlerId, responseCode, data = null) => {
+export const createResponse = (handlerId, responseCode, data = null) => {
   const protoMessages = getProtoMessages();
 
   const Response = protoMessages.response.Response;
@@ -18,10 +19,13 @@ export const createReponse = (handlerId, responseCode, data = null) => {
 
   // 패킷 길이 정보 (4바이트)
   const packetLength = Buffer.alloc(TOTAL_LENGTH);
-  packetLength.writeUint32BE(buffer.length + TOTAL_LENGTH + PACKET_TYPE_LENGTH, 0);
+  packetLength.writeUint32BE(
+    buffer.length + config.packet.totalLength + config.packet.typeLength,
+    0,
+  );
 
   // 패킷 타입 정보 (1바이트)
-  const packetType = Buffer.alloc(PACKET_TYPE_LENGTH);
+  const packetType = Buffer.alloc(config.packet.typeLength);
   packetType.writeUint8(PACKET_TYPE.NORMAL, 0);
 
   return Buffer.concat([packetLength, packetType, buffer]);

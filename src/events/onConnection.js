@@ -9,6 +9,6 @@ export const onConnection = (socket) => {
   socket.buffer = Buffer.alloc(0); // 전송받을 데이터를 위해 아무 크기없는 버퍼 미리 만들기
 
   socket.on('data', onData(socket));
-  socket.on('data', onEnd(socket));
-  socket.on('data', onError(socket));
+  socket.on('end', onEnd(socket));
+  socket.on('error', onError(socket));
 };
