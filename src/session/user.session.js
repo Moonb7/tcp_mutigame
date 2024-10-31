@@ -38,6 +38,6 @@ export const getUserById = (id) => {
   return user;
 };
 
-export const getAllUsers = () => {
-  return userSessions;
+export const getUserBySocket = (socket) => {
+  return userSessions.find((user) => user.socket === socket);
 };
