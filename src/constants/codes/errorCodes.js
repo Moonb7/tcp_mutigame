@@ -9,6 +9,7 @@ export const ErrorCodes = {
   INVALID_PACKET: 10007,
   INVALID_SEQUENCE: 10008,
   GAME_NOT_FOUND: 10009,
+  SQL_ERROR: 10010,
 };
 
 // 임이의 에러코드를 만들어 쉽게 어떤 에러인지 알 수 있게 합니다. 이러한 에러코드는 클라 개발자와 공유되어야 합니다.

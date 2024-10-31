@@ -1,6 +1,7 @@
 import { ErrorCodes } from '../../constants/codes/errorCodes.js';
 import { getGameSession } from '../../session/game.session.js';
 import CustomError from '../../utils/error/customError.js';
+import { handlerError } from '../../utils/error/errorHandler.js';
 
 export const locationUpdateHandler = async ({ socket, userId, payload }) => {
   try {
@@ -24,6 +25,6 @@ export const locationUpdateHandler = async ({ socket, userId, payload }) => {
 
     socket.write(locationData);
   } catch (e) {
-    console.error(e);
+    handlerError(socket, e);
   }
 };

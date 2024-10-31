@@ -2,6 +2,7 @@ import { RESPONSE_SUCCESS_CODE } from '../../constants/codes/responseCode.js';
 import { HANDLER_IDS } from '../../constants/handlerId.js';
 import { getGameSession } from '../../session/game.session.js';
 import { addUser } from '../../session/user.session.js';
+import { handlerError } from '../../utils/error/errorHandler.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 
 export const initialHandler = async ({ socket, userId, payload }) => {
@@ -18,6 +19,6 @@ export const initialHandler = async ({ socket, userId, payload }) => {
     socket.write(initialResponse);
   } catch (e) {
     // 추가로 핸들러 에러처리해야됨 기억해
-    console.error(e);
+    handlerError(socket, e);
   }
 };

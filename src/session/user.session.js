@@ -1,6 +1,8 @@
 import User from '../classes/models/user.class.js';
 import { userSessions } from './session.js';
 
+// 레디스로 해줘도 될것 같다
+
 /**
  * 추가로 연결한 유저를 서버메모리에 추가 저장합니다.
  * @param {*} socket

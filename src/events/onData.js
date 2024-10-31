@@ -25,11 +25,14 @@ export const onData = (socket) => (data) => {
             const handler = getHandlerById(handlerId);
 
             handler({ socket, userId, payload });
-            // console.log('result:', result);
             break;
           }
 
           case PACKET_TYPE.LOCATION: {
+            const { handlerId, userId, payload } = packetParser(packet);
+            const handler = getHandlerById(handlerId);
+
+            handler({ socket, userId, payload });
             break;
           }
         }
