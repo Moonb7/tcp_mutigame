@@ -1,7 +1,7 @@
 export const USERDB_SQL = {
   USER_QUERIES: {
     FIND_USER_BY_DEVICE_ID: 'SELECT * FROM user WHERE device_id = ?',
-    CREATE_USER: 'INSERT INTO user (device_id) VALUES (?)', // 클라에서 유저의 ID를 생성해서 넘겨주면 그걸 저장하면 될것 같다
+    CREATE_USER: 'INSERT INTO user (device_id) VALUES (?)',
     UPDATE_USER_LOGIN: 'UPDATE user SET last_login = CURRENT_TIMESTAMP WHERE device_id = ?',
   },
   GAME_END_QUERIES: {
