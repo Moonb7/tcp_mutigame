@@ -10,10 +10,14 @@ import { USERDB_SQL } from './user.querise.js';
  * @returns
  */
 export const findUserByDeviceId = async (deviceId) => {
-  const [rows] = await pools.USER_DB.query(USERDB_SQL.USER_QUERIES.FIND_USER_BY_DEVICE_ID, [
-    deviceId,
-  ]);
-  return toCamelCase(rows[0]); // 카멜케이스로 변환하여 반환
+  try {
+    const [rows] = await pools.USER_DB.query(USERDB_SQL.USER_QUERIES.FIND_USER_BY_DEVICE_ID, [
+      deviceId,
+    ]);
+    return toCamelCase(rows[0]); // 카멜케이스로 변환하여 반환
+  } catch (e) {
+    throw new CustomError(ErrorCodes.SQL_ERROR, `DB 유저 조회 중 문제가 발생하였습니다. ${e}`);
+  }
 };
 
 /**
@@ -47,7 +51,10 @@ export const createUser = async (deviceId) => {
   } catch (e) {
     await connection.rollback();
 
-    console.error(e);
+    throw new CustomError(
+      ErrorCodes.SQL_ERROR,
+      `DB 새로운 유저를 생성하는 과정에서 문제가 발생하였습니다. ${e}`,
+    );
   } finally {
     connection.release(); // 연결 해제
   }
@@ -58,7 +65,14 @@ export const createUser = async (deviceId) => {
  * @param {*} deviceId
  */
 export const updateUserLogin = async (deviceId) => {
-  await pools.USER_DB.query(USERDB_SQL.USER_QUERIES.UPDATE_USER_LOGIN, [deviceId]); // db 처리
+  try {
+    await pools.USER_DB.query(USERDB_SQL.USER_QUERIES.UPDATE_USER_LOGIN, [deviceId]); // db 처리
+  } catch (e) {
+    throw new CustomError(
+      ErrorCodes.SQL_ERROR,
+      `DB 유저의 로그인 정보를 업데이트 하는 과정에서 문제가 발생하였습니다. ${e}`,
+    );
+  }
 };
 
 /**
@@ -83,7 +97,10 @@ export const updateLocation = async (deviceId, x, y) => {
   } catch (e) {
     await connection.rollback();
 
-    console.error(e);
+    throw new CustomError(
+      ErrorCodes.SQL_ERROR,
+      `DB 유저의 위치값을 업데이트 하는데 문제가 발생하였습니다. ${e}`,
+    );
   } finally {
     connection.release(); // 연결 해제
   }
@@ -95,9 +112,17 @@ export const updateLocation = async (deviceId, x, y) => {
  * @returns
  */
 export const findGameEndInfo = async (userId) => {
-  const [rows] = await pools.USER_DB.query(USERDB_SQL.GAME_END_QUERIES.FIND_GAME_INFO_BY_USER_ID, [
-    userId,
-  ]);
+  try {
+    const [rows] = await pools.USER_DB.query(
+      USERDB_SQL.GAME_END_QUERIES.FIND_GAME_INFO_BY_USER_ID,
+      [userId],
+    );
 
-  return toCamelCase(rows[0]);
+    return toCamelCase(rows[0]);
+  } catch (e) {
+    throw new CustomError(
+      ErrorCodes.SQL_ERROR,
+      `DB 유저의 이전 게임 정보를 조회하는 과정에서 문제가 발생하였습니다. ${e}`,
+    );
+  }
 };

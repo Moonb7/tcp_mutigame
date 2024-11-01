@@ -12,4 +12,3 @@ message LocationUpdate {
         float y = 4;
     }
 }
-
