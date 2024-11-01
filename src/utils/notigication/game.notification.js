@@ -19,18 +19,8 @@ export const createLocationPacket = (users) => {
   const protoMessages = getProtoMessages();
   const LocationUpdate = protoMessages.gameNotification.LocationUpdate;
 
-  const payload = { users };
+  const payload = { users }; // 클라에서 받은 users를 할당
   const message = LocationUpdate.create(payload);
   const locationPacket = LocationUpdate.encode(message).finish();
   return makeNotification(locationPacket, PACKET_TYPE.LOCATION);
-};
-
-export const createPingPacket = (timestamp) => {
-  const protoMessages = getProtoMessages();
-  const Ping = protoMessages.common.Ping;
-
-  const payload = { timestamp };
-  const message = Ping.create(payload);
-  const pingPacket = Ping.encode(message).finish();
-  return makeNotification(pingPacket, PACKET_TYPE.PING);
 };
