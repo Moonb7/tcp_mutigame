@@ -3,7 +3,6 @@ import { PACKET_TYPE } from '../constants/header.js';
 import { getHandlerById } from '../handlers/index.js';
 import { getProtoMessages } from '../init/loadProtos.js';
 import { getUserBySocket } from '../session/user.session.js';
-import CustomError from '../utils/error/customError.js';
 import { packetParser } from '../utils/parser/packetParser.js';
 
 export const onData = (socket) => (data) => {
@@ -19,33 +18,32 @@ export const onData = (socket) => (data) => {
       socket.buffer = socket.buffer.subarray(length); // 다음 패킷에 대비해 필요이상의 데이터를 제거하여 buffer에 데이터를 초기화 시킵니다.
       try {
         switch (packetType) {
-          case PACKET_TYPE.PING: {
-            const protoMessages = getProtoMessages();
-            const Ping = protoMessages.common.Ping;
-            const pingMessage = Ping.decode(packet);
-            const user = getUserBySocket(socket);
-            if (!user) {
-              throw new CustomError(ErrorCodes.USER_NOT_FOUND, '유저를 찾을 수 없습니다.');
+          case PACKET_TYPE.PING:
+            {
+              const protoMessages = getProtoMessages();
+              const Ping = protoMessages.common.Ping;
+              const pingPacket = Ping.decode(packet);
+
+              const user = getUserBySocket(socket);
+              user.handlePong(pingPacket);
             }
-            user.handlePong(pingMessage);
             break;
-          }
+          case PACKET_TYPE.NORMAL:
+            {
+              const { handlerId, userId, payload } = packetParser(packet);
+              const handler = getHandlerById(handlerId);
 
-          case PACKET_TYPE.NORMAL: {
-            const { handlerId, userId, payload } = packetParser(packet);
-            const handler = getHandlerById(handlerId);
-
-            handler({ socket, userId, payload });
+              handler({ socket, userId, payload });
+            }
             break;
-          }
+          case PACKET_TYPE.LOCATION:
+            {
+              const { handlerId, userId, payload } = packetParser(packet);
+              const handler = getHandlerById(handlerId);
 
-          case PACKET_TYPE.LOCATION: {
-            const { handlerId, userId, payload } = packetParser(packet);
-            const handler = getHandlerById(handlerId);
-
-            handler({ socket, userId, payload });
+              handler({ socket, userId, payload });
+            }
             break;
-          }
         }
       } catch (e) {
         console.error(e);

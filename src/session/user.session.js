@@ -1,4 +1,6 @@
+import { ErrorCodes } from '../constants/codes/errorCodes.js';
 import { updateLocation } from '../db/user/user.db.js';
+import CustomError from '../utils/error/customError.js';
 import { userSessions } from './session.js';
 
 // 레디스로 해줘도 될것 같다
@@ -29,15 +31,24 @@ export const removeUser = async (socket) => {
 };
 
 /**
- * UUID를 통해 해당 유저를 조회하는 함수입니다.
- * @param {*} id 유저의 id
+ * 현재 세션에 포함된 user정보를 배열로 반환해 줍니다.
  * @returns
  */
-export const getUserById = (id) => {
-  const user = userSessions.find((user) => user.id === id);
-  return user;
+export const getAllUser = () => {
+  return userSessions;
 };
 
+/**
+ * socket을 통해 현재 세션에 포함된 유저를 조회합니다.
+ * @param {*} socket
+ * @returns
+ */
 export const getUserBySocket = (socket) => {
-  return userSessions.find((user) => user.socket === socket);
+  const user = userSessions.find((user) => user.socket === socket);
+
+  if (!user) {
+    throw new CustomError(ErrorCodes.USER_NOT_FOUND, '유저를 찾을 수 없습니다.');
+  }
+
+  return user;
 };

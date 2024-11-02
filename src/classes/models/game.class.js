@@ -1,4 +1,4 @@
-import { createPingPacket } from '../../utils/notigication/game.notification.js';
+import { createLocationPacket } from '../../utils/notigication/game.notification.js';
 import LatencyManager from '../managers/latency.manager.js';
 
 class Game {
@@ -48,7 +48,7 @@ class Game {
         return { id: user.id, playerId: user.playerId, x, y };
       });
 
-    return createPingPacket(locationData);
+    return createLocationPacket(locationData);
   }
 }
 

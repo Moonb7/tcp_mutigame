@@ -1,3 +1,5 @@
+import { ErrorCodes } from '../../constants/codes/errorCodes.js';
+import CustomError from '../../utils/error/customError.js';
 import { createPingPacket } from '../../utils/notigication/game.notification.js';
 
 class User {
@@ -24,15 +26,20 @@ class User {
 
   ping() {
     const now = Date.now();
-
     this.socket.write(createPingPacket(now));
   }
 
-  // 레이턴시 업데이트
   handlePong(data) {
+    if (data.timestamp === undefined || data.timestamp.low === 0) {
+      throw new CustomError(
+        ErrorCodes.MISSING_FIELDS,
+        '해당 timestamp 값이 제대로 조회되지 않습니다.',
+      );
+    }
     const now = Date.now();
     this.latency = (now - data.timestamp) / 2;
-    console.log(this.latency);
+
+    console.log(`${this.id}: ${this.latency}`);
   }
 
   calculatePosition(latency) {
